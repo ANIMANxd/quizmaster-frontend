@@ -1,0 +1,49 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard - QuizMaster Pro</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <div class="sidebar">
+    <h2>QuizMaster Pro</h2>
+    <ul>
+      <li><a href="user_dashboard.html" class="active">Dashboard</a></li>
+      <li><a href="quiz_history.html">My History</a></li>
+      <li><a href="performance_summary.html">Performance</a></li>
+    </ul>
+    <button class="logout-btn" onclick="logout()">Logout</button>
+  </div>
+
+  <div class="main-content">
+    <header>
+        <h1>Welcome, <span id="user-name">User</span>!</h1>
+        <p>Choose a subject to start learning and attempting quizzes.</p>
+    </header>
+    <div class="content-wrapper">
+        <section>
+          <h2>Choose a Subject</h2>
+          <div id="subject-container" class="subject-card-grid"> 
+            <p>Loading subjects...</p>
+          </div>
+        </section>
+
+        <section id="chapter-quiz-section" class="hidden">
+            <h2 id="selected-subject-title"></h2>
+            <div class="chapter-tabs-container">
+                <div id="chapter-tabs" class="chapter-tabs"></div>
+            </div>
+            <div class="quiz-section">
+                <h3>Available Quizzes</h3>
+                <ul id="quiz-list" class="quiz-list"></ul>
+            </div>
+        </section>
+    </div>
+  </div>
+
+  <script src="js/user_dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Attempt Quiz - QuizMaster Pro</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="quiz-attempt-page"> 
+
+  <div class="quiz-container">
+    <div class="quiz-main-panel">
+        <header>
+          <h1>Questions</h1>
+        </header>
+        <form id="quiz-form">
+          <div id="questions-container">
+            <div class="loading-spinner"></div>
+          </div>
+        </form>
+    </div>
+
+    <aside class="quiz-sidebar">
+        <div class="quiz-sidebar-content">
+            <h2 id="quiz-title">Loading Quiz...</h2>
+            <div id="attempt-history"></div>
+            <hr/>
+            <div id="result" class="hidden"></div>
+            
+            <div class="form-actions">
+              <button type="submit" form="quiz-form" class="btn btn-success">Submit Quiz</button>
+              <button id="reattempt-btn" class="btn hidden">🔁 Re-Attempt Quiz</button>
+            </div>
+            <a href="user_dashboard.html" class="back-link">← Back to Dashboard</a>
+        </div>
+    </aside>
+  </div>
+  
+
+  <script src="js/quiz_attempt.js"></script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Chapter Management - QuizMaster Pro</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  
+  <div class="sidebar">
+    <h2>QuizMaster Pro</h2>
+    <ul>
+      <li><a href="admin_dashboard.html">Dashboard</a></li>
+      <li><a href="subjects.html">Subjects</a></li>
+      <li><a href="chapters.html" class="active">Chapters</a></li>
+      <li><a href="quizzes.html">Quizzes</a></li>
+      <li><a href="allusers.html">Users</a></li>
+      <li><a href="#" onclick="logout()">Logout</a></li>
+    </ul>
+  </div>
+  
+  <div class="main-content">
+    <header>
+      <div class="header-left">
+        <h1>Chapter Management</h1>
+        <p>Organize subjects into distinct chapters.</p>
+      </div>
+    </header>
+
+    <div class="content-wrapper">
+      <div class="top-actions">
+          <button id="openAddChapterModal" class="btn btn-primary">
+            <span>+</span> Add New Chapter
+          </button>
+      </div>
+
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Chapter</th>
+              <th>Subject</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="chapter-table-body">
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div id="chapterModal" class="modal hidden">
+    <div class="modal-overlay" onclick="closeChapterModal()"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="chapterModalTitle">Add New Chapter</h2>
+        <button class="close-btn" onclick="closeChapterModal()">×</button>
+      </div>
+      <form id="chapterForm" class="modal-form">
+        <input type="hidden" id="chapterId" />
+        <div class="form-group">
+          <label for="chapterName">Chapter Name</label>
+          <input type="text" id="chapterName" placeholder="Enter chapter name" required />
+        </div>
+        <div class="form-group">
+          <label for="chapterSubject">Subject</label>
+          <select id="chapterSubject" required>
+          </select>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" onclick="closeChapterModal()">Cancel</button>
+          <button type="submit" class="btn btn-success">Save Chapter</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/chapters.js"></script>
+</body>
+</html>

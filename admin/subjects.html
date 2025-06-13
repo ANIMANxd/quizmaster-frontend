@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Subjects Management - QuizMaster Pro</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  
+  <div class="sidebar">
+    <h2>QuizMaster Pro</h2>
+    <ul>
+      <li><a href="admin_dashboard.html">Dashboard</a></li>
+      <li><a href="subjects.html" class="active">Subjects</a></li>
+      <li><a href="chapters.html">Chapters</a></li>
+      <li><a href="quizzes.html">Quizzes</a></li>
+      <li><a href="allusers.html">Users</a></li>
+      <li><a href="#" onclick="logout()">Logout</a></li>
+    </ul>
+  </div>
+
+  <div class="main-content">
+    <header>
+      <div class="header-left">
+        <h1>Subjects Management</h1>
+        <p>Add, edit, and manage all course subjects.</p>
+      </div>
+    </header>
+
+    <div class="content-wrapper">
+        <div class="top-actions">
+            <button id="openAddSubjectModal" class="btn btn-primary">
+              <span>+</span> Add New Subject
+            </button>
+        </div>
+
+        <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Subject Name</th>
+                  <th>Description</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="subject-table-body">
+                <!-- Dynamic content will be loaded here -->
+              </tbody>
+            </table>
+        </div>
+    </div>
+  </div>
+
+  <!-- Unified Add/Edit Subject Modal -->
+  <div id="subjectModal" class="modal hidden">
+    <div class="modal-overlay" onclick="closeSubjectModal()"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="subjectModalTitle">Add New Subject</h2>
+        <button class="close-btn" onclick="closeSubjectModal()">×</button>
+      </div>
+      <form id="subjectForm" class="modal-form">
+        <input type="hidden" id="subjectId">
+        <div class="form-group">
+          <label for="subjectName">Subject Name</label>
+          <input type="text" id="subjectName" placeholder="e.g., Python Programming" required>
+        </div>
+        <div class="form-group">
+          <label for="subjectDescription">Description</label>
+          <textarea id="subjectDescription" placeholder="A brief description of the subject"></textarea>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" onclick="closeSubjectModal()">Cancel</button>
+          <button type="submit" class="btn btn-success">Save Subject</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/subjects.js"></script>
+</body>
+</html>

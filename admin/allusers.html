@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>User Management - QuizMaster Pro</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  
+  <div class="sidebar">
+    <h2>QuizMaster Pro</h2>
+    <ul>
+      <li><a href="admin_dashboard.html">Dashboard</a></li>
+      <li><a href="subjects.html">Subjects</a></li>
+      <li><a href="chapters.html">Chapters</a></li>
+      <li><a href="quizzes.html">Quizzes</a></li>
+      <li><a href="allusers.html" class="active">Users</a></li>
+      <li><a href="#" onclick="logout()">Logout</a></li>
+    </ul>
+  </div>
+
+  <div class="main-content">
+    <header>
+      <div class="header-left">
+        <h1>User Management</h1>
+        <p>Monitor, filter, and manage all users on the platform.</p>
+      </div>
+    </header>
+
+    <div class="content-wrapper">
+      <div class="top-actions">
+        <button id="openAddUserModal" class="btn btn-primary">
+          <span>+</span> Add New User
+        </button>
+
+        <div class="filters-container">
+            <div class="filter-group">
+                <label for="roleFilter">Filter by Role:</label>
+                <select id="roleFilter">
+                    <option value="user">Users</option>
+                    <option value="admin">Admins</option>
+                    <option value="all">All</option>
+                </select>
+            </div>
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Search by name or email..." />
+            </div>
+        </div>
+      </div>
+
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="user-table-body">
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div id="addUserModal" class="modal hidden">
+    <div class="modal-overlay" onclick="closeAddUserModal()"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Add New User</h2>
+        <button class="close-btn" onclick="closeAddUserModal()">×</button>
+      </div>
+      <form id="addUserForm" class="modal-form">
+        <div class="form-group"><label for="addUserName">Full Name</label><input type="text" id="addUserName" required></div>
+        <div class="form-group"><label for="addUserEmail">Email Address</label><input type="email" id="addUserEmail" required></div>
+        <div class="form-group"><label for="addUserPassword">Password</label><input type="password" id="addUserPassword" required></div>
+        <div class="form-group"><label for="addUserRole">Role</label><select id="addUserRole" required><option value="user">User</option><option value="admin">Admin</option></select></div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" onclick="closeAddUserModal()">Cancel</button>
+          <button type="submit" class="btn btn-success">Add User</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="performanceModal" class="modal hidden large-modal">
+    <div class="modal-overlay" onclick="closePerformanceModal()"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="performance-modal-title">User Performance</h2>
+        <button class="close-btn" onclick="closePerformanceModal()">×</button>
+      </div>
+      <div id="performance-modal-body" class="modal-body">
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="js/user_manage.js"></script>
+</body>
+</html>

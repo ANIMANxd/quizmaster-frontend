@@ -1,0 +1,442 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuizMaster Pro - Authentication</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #f0f2f5;
+            --bg-secondary: #ffffff;
+            --text-primary: #1c1e21;
+            --text-secondary: #606770;
+            --border-color: #dddfe2;
+            --primary-color: #007bff;
+            --primary-color-hover: #0056b3;
+            --success-color: #28a745;
+            --error-color: #dc3545;
+            --shadow-color-light: rgba(0, 0, 0, 0.1);
+            --shadow-color-heavy: rgba(0, 0, 0, 0.2);
+            --font-family: 'Inter', sans-serif;
+            --border-radius: 8px;
+        }
+
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            margin: 0;
+            display: grid;
+            place-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+        
+        .theme-switcher {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+        #theme-toggle-btn {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 5px var(--shadow-color-light);
+            transition: background-color 0.2s, border-color 0.2s;
+        }
+        #theme-toggle-btn svg {
+            width: 20px;
+            height: 20px;
+            color: var(--text-primary);
+        }
+        #theme-toggle-btn .sun-icon { display: block; }
+        #theme-toggle-btn .moon-icon { display: none; }
+
+        [data-theme="dark"] #theme-toggle-btn .sun-icon { display: none; }
+        [data-theme="dark"] #theme-toggle-btn .moon-icon { display: block; }
+        
+
+        .auth-container {
+            width: 100%;
+            max-width: 420px;
+            text-align: center;
+        }
+
+        .auth-container h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: var(--text-primary);
+        }
+
+        .form-container {
+            background-color: var(--bg-secondary);
+            padding: 2.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 12px var(--shadow-color-heavy);
+            display: none;
+            text-align: left;
+            opacity: 0;
+            transform: scale(0.98);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .form-container.active {
+            display: block;
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .form-container h2 {
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            font-size: 1.75rem;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary-color) 20%, transparent);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #fff;
+            background-color: var(--primary-color);
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-color-hover);
+        }
+        
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn.loading {
+            color: transparent;
+        }
+
+        .btn.loading::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin: auto;
+            border: 3px solid transparent;
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: btn-loading-spinner 1s ease infinite;
+        }
+        
+        @keyframes btn-loading-spinner {
+            from { transform: rotate(0turn); }
+            to { transform: rotate(1turn); }
+        }
+
+        #login-messages, #register-messages {
+            margin-bottom: 1rem;
+            text-align: center;
+            font-weight: 500;
+        }
+        .error-message { color: var(--error-color); }
+        .success-message { color: var(--success-color); }
+
+        .toggle-form {
+            margin-top: 1.5rem;
+            text-align: center;
+            color: var(--text-secondary);
+        }
+
+        .toggle-form a {
+            color: var(--primary-color);
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .toggle-form a:hover {
+            text-decoration: underline;
+        }
+        
+        .password-strength {
+            height: 5px;
+            background: var(--bg-primary);
+            border-radius: 5px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+
+        .password-strength-bar {
+            height: 100%;
+            width: 0;
+            transition: width 0.3s, background-color 0.3s;
+        }
+
+        .password-strength-bar.strength-weak { width: 25%; background-color: #e74c3c; }
+        .password-strength-bar.strength-medium { width: 60%; background-color: #f39c12; }
+        .password-strength-bar.strength-strong { width: 100%; background-color: #2ecc71; }
+        
+    </style>
+</head>
+<body>
+    
+    <div class="auth-container">
+        <h1>QuizMaster Pro</h1>       
+        <div id="login-form" class="form-container active">
+            <h2>Welcome</h2>
+            <div id="login-messages"></div>
+            <form id="login">
+                <div class="form-group">
+                    <label for="login-email">Email Address</label>
+                    <input type="email" id="login-email" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" placeholder="Enter your password" required>
+                </div>
+                <button type="submit" class="btn" id="login-btn">Sign In</button>
+            </form>
+            <div class="toggle-form">
+                <p>New to Quiz Master Pro? <a href="#" id="show-register">Create Account</a></p>
+            </div>
+        </div>
+        
+        <div id="register-form" class="form-container">
+            <h2>Create Account</h2>
+            <div id="register-messages"></div>
+            <form id="register">
+                <div class="form-group">
+                    <label for="register-name">Full Name</label>
+                    <input type="text" id="register-name" placeholder="Enter your full name" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-email">Email Address</label>
+                    <input type="email" id="register-email" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-password">Password</label>
+                    <input type="password" id="register-password" placeholder="Create a strong password" required>
+                    <div class="password-strength">
+                        <div class="password-strength-bar" id="password-strength-bar"></div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="confirm-password">Confirm Password</label>
+                    <input type="password" id="confirm-password" placeholder="Confirm your password" required>
+                </div>
+                <button type="submit" class="btn" id="register-btn">Create Account</button>
+            </form>
+            <div class="toggle-form">
+                <p>Already have an account? <a href="#" id="show-login">Sign In</a></p>
+            </div>
+        </div>
+    </div>
+    <script>
+        const API_BASE_URL = "http://localhost:8000"; 
+
+        document.getElementById('show-register').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('login-form').classList.remove('active');
+            document.getElementById('register-form').classList.add('active');
+            clearMessages();
+        });
+
+        document.getElementById('show-login').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('register-form').classList.remove('active');
+            document.getElementById('login-form').classList.add('active');
+            clearMessages();
+        });
+
+        function showMessage(containerId, message, type = 'error') {
+            const container = document.getElementById(containerId);
+            const messageClass = type === 'success' ? 'success-message' : 'error-message';
+            container.innerHTML = `<div class="${messageClass}">${message}</div>`;
+            if (type === 'success') {
+                setTimeout(() => { container.innerHTML = ''; }, 3000);
+            }
+        }
+
+        function clearMessages() {
+            document.getElementById('login-messages').innerHTML = '';
+            document.getElementById('register-messages').innerHTML = '';
+        }
+
+        function checkPasswordStrength(password) {
+            const strengthBar = document.getElementById('password-strength-bar');
+            let strength = 0;
+            if (password.length >= 8) strength++;
+            if (/[A-Z]/.test(password)) strength++;
+            if (/[0-9]/.test(password)) strength++;
+            if (/[^A-Za-z0-9]/.test(password)) strength++;
+            strengthBar.className = 'password-strength-bar';
+            if (strength >= 1) strengthBar.classList.add('strength-weak');
+            if (strength >= 3) strengthBar.classList.add('strength-medium');
+            if (strength >= 4) strengthBar.classList.add('strength-strong');
+        }
+
+        document.getElementById('register-password').addEventListener('input', function() {
+            checkPasswordStrength(this.value);
+        });
+
+        function setLoading(buttonId, loading) {
+            const button = document.getElementById(buttonId);
+            if (loading) {
+                button.classList.add('loading');
+                button.disabled = true;
+            } else {
+                button.classList.remove('loading');
+                button.disabled = false;
+            }
+        }
+
+        // LOGIN
+        document.getElementById('login').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            clearMessages();
+            
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+
+            setLoading('login-btn', true);
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/auth/login`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    localStorage.setItem("token", data.token);
+
+                    const userResponse = await fetch(`${API_BASE_URL}/users/me`, {
+                        headers: { Authorization: `Bearer ${data.token}` }
+                    });
+
+                    if (!userResponse.ok) throw new Error("Failed to fetch user data");
+
+                    const user = await userResponse.json();
+                    
+                    localStorage.setItem("user_role", user.role);
+                    localStorage.setItem("user_name", user.name);
+                    localStorage.setItem("user_id", user.id);
+
+                    showMessage('login-messages', 'Login successful! Redirecting...', 'success');
+                    setTimeout(() => {
+                        if (user.role && user.role === 'admin') {
+                            window.location.href = `./admin/admin_dashboard.html`;
+                        } else {
+                            window.location.href = `./users/user_dashboard.html`;
+                        }
+                    }, 1500);
+                } else {
+                    showMessage('login-messages', "Login failed: " + (data.detail || 'Invalid credentials'));
+                }
+            } catch (error) {
+                showMessage('login-messages', "Server error. Please try again.");
+                console.error(error);
+            } finally {
+                setLoading('login-btn', false);
+            }
+        });
+
+        // REGISTER
+        document.getElementById('register').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            clearMessages();
+
+            const name = document.getElementById('register-name').value;
+            const email = document.getElementById('register-email').value;
+            const password = document.getElementById('register-password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+
+            if (password !== confirmPassword) {
+                showMessage('register-messages', "Passwords do not match!");
+                return;
+            }
+
+            setLoading('register-btn', true);
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/auth/register`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ name, email, password })
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    showMessage('register-messages', "Registration successful! Redirecting to login...", 'success');
+                    setTimeout(() => {
+                        document.getElementById('register-form').classList.remove('active');
+                        document.getElementById('login-form').classList.add('active');
+                    }, 2000);
+                } else {
+                    showMessage('register-messages', "Registration failed: " + (data.detail || 'Please try again'));
+                }
+            } catch (error) {
+                showMessage('register-messages', "Server error. Please try again.");
+                console.error(error);
+            } finally {
+                setLoading('register-btn', false);
+            }
+        });
+    </script>
+</body>
+</html>

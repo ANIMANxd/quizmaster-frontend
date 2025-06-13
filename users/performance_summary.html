@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Performance Summary - QuizMaster Pro</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+  <div class="sidebar">
+    <h2>QuizMaster Pro</h2>
+    <ul>
+      <li><a href="user_dashboard.html">Dashboard</a></li>
+      <li><a href="quiz_history.html">My History</a></li>
+      <li><a href="performance_summary.html" class="active">Performance</a></li>
+    </ul>
+    <button class="logout-btn" onclick="logout()">Logout</button>
+  </div>
+
+  <div class="main-content">
+    <header>
+      <h1>Your Performance Summary</h1>
+      <p>An overview of your quiz results, progress, and areas for improvement.</p>
+    </header>
+
+    <div class="content-wrapper">
+        <section class="stats-grid" id="stats-grid">
+            <div class="stat-card"><h3>Loading...</h3><p>-</p></div>
+            <div class="stat-card"><h3>Loading...</h3><p>-</p></div>
+            <div class="stat-card"><h3>Loading...</h3><p>-</p></div>
+            <div class="stat-card"><h3>Loading...</h3><p>-</p></div>
+        </section>
+
+        <section class="charts-grid">
+            <div class="chart-container">
+              <h3>Average Score by Subject</h3>
+              <div class="chart-wrapper">
+                <canvas id="subjectChart"></canvas>
+              </div>
+            </div>
+            <div class="chart-container">
+              <h3>Recent Performance Trend</h3>
+              <div class="chart-wrapper">
+                <canvas id="trendChart"></canvas>
+              </div>
+            </div>
+            <div class="chart-container">
+              <h3>Best Performing Quizzes</h3>
+              <div id="best-quizzes-list" class="performance-list">
+                 <p>Loading...</p>
+              </div>
+            </div>
+            <div class="chart-container">
+              <h3>Areas for Improvement</h3>
+              <div id="improvement-areas-list" class="performance-list">
+                 <p>Loading...</p>
+              </div>
+            </div>
+        </section>
+    </div>
+  </div>
+
+
+  <script src="js/performance_summary.js"></script>
+</body>
+</html>

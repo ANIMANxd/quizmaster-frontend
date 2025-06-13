@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Quiz Management - QuizMaster Pro</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <div class="sidebar">
+    <h2>QuizMaster Pro</h2>
+    <ul>
+      <li><a href="admin_dashboard.html">Dashboard</a></li>
+      <li><a href="subjects.html">Subjects</a></li>
+      <li><a href="chapters.html">Chapters</a></li>
+      <li><a href="quizzes.html" class="active">Quizzes</a></li>
+      <li><a href="allusers.html">Users</a></li>
+      <li><a href="#" onclick="logout()">Logout</a></li>
+    </ul>
+  </div>
+
+  <div class="main-content">
+    <header>
+      <div class="header-left">
+        <h1>Quiz Management</h1>
+        <p>Create, edit, and manage all manual and AI-generated quizzes.</p>
+      </div>
+    </header>
+
+    <div class="content-wrapper">
+      <div class="top-actions">
+        <button id="openAddQuizModal" class="btn btn-primary">Create Manual Quiz</button>
+        <button id="openAIModalBtn" class="btn btn-info">Create with AI</button>
+      </div>
+
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Quiz Title</th>
+              <th>Origin</th>
+              <th>Subject</th>
+              <th>Chapter</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="quiz-table-body">
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div id="addQuizModal" class="modal hidden">
+    <div class="modal-overlay" onclick="closeAddQuizModal()"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="manualQuizModalTitle">Create/Edit Quiz</h2>
+        <button class="close-btn" onclick="closeAddQuizModal()">×</button>
+      </div>
+      <form id="createQuizForm" class="modal-form">
+        <div class="form-group"><label for="quizTitle">Quiz Title</label><input type="text" id="quizTitle" placeholder="Enter quiz title" required /></div>
+        <div class="form-group"><label for="quizSubject">Subject</label><select id="quizSubject" required></select></div>
+        <div class="form-group"><label for="quizChapter">Chapter</label><select id="quizChapter" required></select></div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" onclick="closeAddQuizModal()">Cancel</button>
+          <button type="submit" class="btn btn-success">Save Quiz</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="aiModal" class="modal hidden">
+    <div class="modal-overlay" onclick="closeAIModal()"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Create Quiz with AI</h2>
+        <button class="close-btn" onclick="closeAIModal()">×</button>
+      </div>
+      <form id="createAIQuizForm" class="modal-form">
+        <div class="form-group"><label for="subjectSelect">Subject</label><select id="subjectSelect" required><option value="">-- Select Subject --</option></select></div>
+        <div class="form-group"><label for="chapterSelect">Chapter</label><select id="chapterSelect" required><option value="">-- Select Chapter --</option></select></div>
+        <div class="form-group"><label for="numMCQs">Number of MCQs</label><input type="number" id="numMCQs" min="0" value="3" required /></div>
+        <div class="form-group"><label for="numMSQs">Number of MSQs</label><input type="number" id="numMSQs" min="0" value="2" required /></div>
+        <div class="form-group"><label for="marksPerQuestion">Marks Per Question</label><input type="number" id="marksPerQuestion" min="1" value="1" required /></div>
+        <div class="form-group"><label for="fileUpload">Upload Supporting File (PDF/TEXT/DOCX/PPTX)</label><input type="file" id="fileUpload" accept=".pdf,.txt,.pptx,.docx,.doc" required /></div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" onclick="closeAIModal()">Cancel</button>
+          <button type="submit" class="btn btn-success" id="generateQuizBtn">Generate Quiz</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="questionsPreviewModal" class="modal hidden large-modal">
+    <div class="modal-overlay" onclick="closeQuestionsPreviewModal()"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="previewTitle">Generated Questions Preview</h2>
+        <button class="close-btn" onclick="closeQuestionsPreviewModal()">×</button>
+      </div>
+      <div id="generatedQuestionsContainer" class="modal-body">
+        <div id="questionsPreviewList" class="question-preview-list">
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-secondary" onclick="closeQuestionsPreviewModal()">Cancel</button>
+        <button type="button" id="submitAIQuizBtn" class="btn btn-success">Save Quiz to Database</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="questionModal" class="modal hidden large-modal">
+    <div class="modal-overlay" onclick="closeQuestionModal()"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Add Manual Questions</h2>
+        <button class="close-btn" onclick="closeQuestionModal()">×</button>
+      </div>
+      <div class="modal-body">
+        <form id="questionForm">
+            <div class="form-group"><label for="questionText">Question Text</label><textarea id="questionText" required></textarea></div>
+            <div class="form-group"><label for="questionType">Question Type</label><select id="questionType" required><option value="mcq">MCQ (Single Correct)</option><option value="msq">MSQ (Multiple Correct)</option></select></div>
+            <div class="form-group"><label for="questionMarks">Marks</label><input type="number" id="questionMarks" value="1" min="1" required /></div>
+            <div class="form-group"><label>Options</label><div id="optionsContainer"></div><button type="button" id="addOptionBtn" class="btn btn-secondary btn-sm">+ Add Option</button></div>
+            <button type="button" id="addQuestionToBuffer" class="btn btn-primary">Add Question to List</button>
+        </form>
+        <hr style="margin: 20px 0;">
+        <h3>Questions to be Submitted</h3>
+        <div id="questionPreviewList" class="question-preview-list" style="max-height: 250px; overflow-y: auto;"></div>
+        <button type="button" id="undoLastQuestion" class="btn btn-warning btn-sm" style="margin-top:10px;">↩️ Undo Last</button>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-secondary" onclick="closeQuestionModal()">Cancel</button>
+        <button type="button" id="submitQuizQuestions" class="btn btn-success">✅ Submit All Questions</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/quizzes.js"></script>
+</body>
+</html>

@@ -6,7 +6,7 @@ const chapterNameInput = document.getElementById("chapterName");
 const chapterSubjectSelect = document.getElementById("chapterSubject");
 const chapterModalTitle = document.getElementById("chapterModalTitle");
 
-const API_BASE = "http://localhost:8000";
+const API_BASE = "https://quizmaster-backend-cs3d.onrender.com";
 
 
 document.addEventListener('DOMContentLoaded', function () {

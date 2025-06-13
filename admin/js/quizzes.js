@@ -1,5 +1,5 @@
 
-const API_BASE = "http://127.0.0.1:8000";
+const API_BASE = "https://quizmaster-backend-cs3d.onrender.com";
 
 const quizTableBody = document.getElementById("quiz-table-body");
 const addQuizModal = document.getElementById("addQuizModal");

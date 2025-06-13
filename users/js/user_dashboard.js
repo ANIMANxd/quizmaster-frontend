@@ -1,5 +1,5 @@
 
-const API_URL = "http://127.0.0.1:8000";
+const API_URL = "https://quizmaster-backend-cs3d.onrender.com";
 
 const subjectContainer = document.getElementById("subject-container");
 const chapterQuizSection = document.getElementById("chapter-quiz-section");

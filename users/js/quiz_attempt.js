@@ -1,6 +1,6 @@
 
 
-const API_URL = "http://127.0.0.1:8000";
+const API_URL = "https://quizmaster-backend-cs3d.onrender.com";
 const quizId = new URLSearchParams(window.location.search).get("quiz_id");
 const quizTitle = new URLSearchParams(window.location.search).get("title");
 

@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:8000";
+const API_URL = "https://quizmaster-backend-cs3d.onrender.com";
 
 const subjectTableBody = document.getElementById("subject-table-body");
 const subjectModal = document.getElementById("subjectModal");

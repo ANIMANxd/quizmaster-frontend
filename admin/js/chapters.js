@@ -132,4 +132,14 @@ document.getElementById("openAddChapterModal").addEventListener("click", () => o
 window.onload = async () => {
   await loadSubjects();
   await loadChapters();
+
+  const hamburgerBtn = document.getElementById('hamburger-btn');
+    const sidebar = document.querySelector('.sidebar');
+
+    if (hamburgerBtn && sidebar) {
+        hamburgerBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('open');
+            hamburgerBtn.classList.toggle('open');
+        });
+    }
 };

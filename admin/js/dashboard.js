@@ -163,7 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const userRole = localStorage.getItem("user_role");
     
     if (!token || userRole !== 'admin') {
-        window.location.href = "index.html";
+        window.location.href = "../index.html";
         return;
     }
     
@@ -174,4 +174,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     fetchDashboardData();
+    const hamburgerBtn = document.getElementById('hamburger-btn');
+    const sidebar = document.querySelector('.sidebar');
+
+    if (hamburgerBtn && sidebar) {
+        hamburgerBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('open');
+            hamburgerBtn.classList.toggle('open');
+        });
+    }
 });

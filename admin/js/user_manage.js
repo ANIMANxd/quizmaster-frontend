@@ -248,4 +248,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.getElementById('openAddUserModal').addEventListener('click', openAddUserModal);
     document.getElementById('addUserForm').addEventListener('submit', addUser);
+
+    const hamburgerBtn = document.getElementById('hamburger-btn');
+    const sidebar = document.querySelector('.sidebar');
+
+    if (hamburgerBtn && sidebar) {
+        hamburgerBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('open');
+            hamburgerBtn.classList.toggle('open');
+        });
+    }
 });

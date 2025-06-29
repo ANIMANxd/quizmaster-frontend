@@ -164,4 +164,13 @@ window.onload = () => {
     return;
   }
   loadSubjects();
+  const hamburgerBtn = document.getElementById('hamburger-btn');
+  const sidebar = document.querySelector('.sidebar');
+
+  if (hamburgerBtn && sidebar) {
+    hamburgerBtn.addEventListener('click', () => {
+      sidebar.classList.toggle('open');
+      hamburgerBtn.classList.toggle('open');
+    });
+  }
 };
